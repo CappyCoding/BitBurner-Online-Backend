@@ -20,6 +20,13 @@ const collectionName = "userData";
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
+//THE FLOODGATES ARE OPEN
+app.use(cors());
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
+
 app.get("/", (req, res) => {
     res.status(300).redirect("/api-info.html");
 });
