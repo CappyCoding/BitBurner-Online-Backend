@@ -14,7 +14,7 @@ const {
     match
 } = require("assert");
 const app = express();
-const port = process.env.PORT || 1337;
+const port = process.env.PORT;
 const client = new MongoClient(process.env.FINAL_URL);
 const dbName = "Bitburner-Online";
 const collectionName = "userData";
