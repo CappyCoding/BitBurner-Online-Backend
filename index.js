@@ -2,19 +2,13 @@ const {
     MongoClient,
     ObjectId
 } = require("mongodb");
-const dotenv = require('dotenv').config();
 const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
-const {
-    ObjectID
-} = require("bson");
-const {
-    match
-} = require("assert");
-const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 1337;
+require('dotenv').config();
 const client = new MongoClient(process.env.FINAL_URL);
 const dbName = "Bitburner-Online";
 const collectionName = "userData";
@@ -32,11 +26,6 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
     res.status(300).redirect("/api-info.html");
 });
-
-app.listen(port, () => {
-    console.log(`API running at at http://localhost:${port}`)
-});
-
 
 app.get("/userdata/get/:id", async (req, res) => {
     try {
@@ -90,4 +79,8 @@ app.post("/userdata/send", async (req, res) => {
     } finally {
         await client.close();
     }
+});
+
+app.listen(port, () => {
+    console.log(`API running at at http://localhost:${port}`)
 });
