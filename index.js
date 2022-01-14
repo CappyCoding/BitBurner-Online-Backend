@@ -16,9 +16,8 @@ const collectionName = "userData";
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
-
-//THE FLOODGATES ARE OPEN
 app.use(cors());
+
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
@@ -70,11 +69,11 @@ app.post("/userdata/send", async (req, res) => {
         } else {
 
             let userData = {
-                serverName: await req.body.serverName,
+                serverName: req.body.serverName,
                 serverPassword: await bcrypt.hash(req.body.password, 10),
-                userMoney: await req.body.userMoney,
-                hackingSkill: await req.body.hackingSkill,
-                isOnline: await req.body.isOnline,
+                userMoney: req.body.userMoney,
+                hackingSkill: req.body.hackingSkill,
+                isOnline: req.body.isOnline
             }
 
             let insertUser = await collection.insertOne(userData);
