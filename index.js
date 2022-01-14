@@ -61,7 +61,7 @@ app.post("/userdata/send", async (req, res) => {
         const collection = client.db(dbName).collection(collectionName);
 
         const match = await collection.findOne({
-            serverName: await req.body.serverName
+            serverName: req.body.serverName
         });
 
         if (match) {
