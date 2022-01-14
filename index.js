@@ -70,18 +70,13 @@ app.post("/userdata/send", async (req, res) => {
 
         await client.connect();
         const collection = client.db(dbName).collection(collectionName);
-        let count = collection.estimatedDocumentCount();
-
-        let serverCount = "server-" + count;
 
         let newUser = {
-            serverCount: {
-                serverName: req.body.serverName,
-                serverPassword: req.body.serverPassword,
-                userMoney: req.body.userMoney,
-                hackingSkill: req.body.hackingSkill,
-                isOnline: req.body.isOnline
-            }
+            serverName: req.body.serverName,
+            serverPassword: req.body.serverPassword,
+            userMoney: req.body.userMoney,
+            hackingSkill: req.body.hackingSkill,
+            isOnline: req.body.isOnline
         };
 
         // Validation for duplicates
