@@ -62,25 +62,23 @@ app.post("/userdata/send", async (req, res) => {
         const collection = client.db(dbName).collection(collectionName);
 
         const match = await collection.findOne({
-            serverName: req.body.serverName
+            serverName: await req.body.serverName
         });
 
         if (match) {
-            res.status(400).send("Bad request: Server Name already exists");
-            return
+            return res.status(400).send("Bad request: Server Name already exists");
         } else {
 
             let userData = {
-                serverName: req.body.serverName,
+                serverName: await req.body.serverName,
                 serverPassword: await bcrypt.hash(req.body.password, 10),
-                userMoney: req.body.userMoney,
-                hackingSkill: req.body.hackingSkill,
-                isOnline: req.body.isOnline,
+                userMoney: await req.body.userMoney,
+                hackingSkill: await req.body.hackingSkill,
+                isOnline: await req.body.isOnline,
             }
 
             let insertUser = await collection.insertOne(userData);
-            res.status(201).send("User has been succesfully created");
-            return
+            return res.status(201).send("User has been succesfully created");
         }
     } catch (error) {
         res.status(500).send("error, something went wrong: " + error);
