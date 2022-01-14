@@ -35,9 +35,7 @@ app.get("/userdata/get/", async (req, res) => {
         // const matchID = {
         //     _id: ObjectId(req.params.id)
         // }
-        res.status(200).send("looking if unique");
-        const allUserData = await col.find({}).toArray();
-        res.status(200).send("unique check worked");
+        const allUserData = await col.find().toArray();
 
         console.log(allUserData);
 
