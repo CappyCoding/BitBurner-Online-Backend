@@ -35,7 +35,9 @@ app.get("/userdata/get/", async (req, res) => {
         // const matchID = {
         //     _id: ObjectId(req.params.id)
         // }
+        res.status(200).send("looking if unique");
         const allUserData = await col.find({}).toArray();
+        res.status(200).send("unique check worked");
 
         console.log(allUserData);
 
@@ -56,34 +58,73 @@ app.get("/userdata/get/", async (req, res) => {
 });
 
 app.post("/userdata/send", async (req, res) => {
+
     try {
         await client.connect();
-        const collection = client.db(dbName).collection(collectionName);
+        const dataCollect = client.db(dbName).collection(collectionName);
 
-        const match = await collection.findOne({
+        const db = await dataCollect.findOne({
             serverName: req.body.serverName
         });
 
-        if (match) {
-            return res.status(400).send("Bad request: Server Name already exists");
-        } else {
-
-            let userData = {
-                serverName: req.body.serverName,
-                serverPassword: await bcrypt.hash(req.body.password, 10),
-                userMoney: req.body.userMoney,
-                hackingSkill: req.body.hackingSkill,
-                isOnline: req.body.isOnline
-            }
-
-            let insertUser = await collection.insertOne(userData);
-            return res.status(201).send("User has been succesfully created");
+        if (db) {
+            res.status(400).send("Bad request: user already exists with email:" + req.body.email);
+            return;
         }
-    } catch (error) {
-        res.status(500).send("error, something went wrong: " + error);
+
+        let newUser = {
+            serverName: req.body.serverName,
+            serverPassword: await bcrypt.hash(req.body.password, 10),
+            userMoney: req.body.userMoney,
+            hackingSkill: req.body.hackingSkill,
+            isOnline: req.body.isOnline
+        }
+
+        let insertData = await dataCollect.insertOne(newUser);
+
+        res.status(201).send(`User Data succesfully saved!`);
+        return;
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({
+            error: 'Something went wrong',
+            value: error
+        });
     } finally {
         await client.close();
     }
+
+
+
+    // try {
+    //     await client.connect();
+    //     const collection = client.db(dbName).collection(collectionName);
+
+    //     const match = await collection.findOne({
+    //         serverName: req.body.serverName
+    //     });
+
+    //     if (match) {
+    //         return res.status(400).send("Bad request: Server Name already exists");
+    //     } else {
+
+    //         let userData = {
+    //             serverName: req.body.serverName,
+    //             serverPassword: await bcrypt.hash(req.body.password, 10),
+    //             userMoney: req.body.userMoney,
+    //             hackingSkill: req.body.hackingSkill,
+    //             isOnline: req.body.isOnline
+    //         }
+
+    //         let insertUser = await collection.insertOne(userData);
+    //         return res.status(201).send("User has been succesfully created");
+    //     }
+    // } catch (error) {
+    //     res.status(500).send("error, something went wrong: " + error);
+    // } finally {
+    //     await client.close();
+    // }
 });
 
 app.listen(port, () => {
