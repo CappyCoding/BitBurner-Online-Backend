@@ -10,7 +10,7 @@ const cors = require('cors');
 
 const client = new MongoClient(process.env.FINAL_URL);
 const app = express();
-const port = process.env.PORT || 1337;
+const port = process.env.PORT;
 const dbName = "Bitburner-Online";
 const collectionName = "userData";
 
