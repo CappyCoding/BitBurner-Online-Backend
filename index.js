@@ -71,6 +71,7 @@ app.post("/userdata/send", async (req, res) => {
         }
 
         let newUser = {
+            _id: ObjectId(req.body.id),
             serverName: req.body.serverName,
             serverPassword: await bcrypt.hash(req.body.password, 10),
             userMoney: req.body.userMoney,
