@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
     res.status(300).redirect("/api-info.html");
 });
 
-app.get("/userdata/get/serverName/serverPassword", async (req, res) => {
+app.get("/userdata/get/:serverName/:serverPassword", async (req, res) => {
     try {
         await client.connect();
         const db = client.db(dbName);
