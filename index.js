@@ -30,23 +30,19 @@ app.get("/", (req, res) => {
 app.get("/userdata/get/:serverName/:serverPassword", async (req, res) => {
     try {
         await client.connect();
-        const db = client.db(dbName);
-        const col = db.collection(collectionName);
+        const collection = client.db(dbName).collection(collectionName);
 
         const matchID = {
             serverName: req.params.serverName,
             serverPassword: req.params.serverPassword
         }
-        // const allUserData = await col.find().toArray();
-        // console.log(allUserData);
-        // res.status(200).send(allUserData);
 
-        const found = await collection.findOne(matchID);
+        const found = await collection.find(matchID);
         if (found) {
             res.status(200).send(found);
             return
         } else {
-            res.status(400).send(`User data not found with id ${req.body.id}`);
+            res.status(400).send(`User data not found with name: ${req.params.serverName} and password: ${req.params.serverPassword}`);
         }
     } catch (error) {
         console.log(error);
