@@ -38,7 +38,7 @@ app.get("/userdata/get/:serverName/:serverPassword", async (req, res) => {
             serverPassword: req.params.serverPassword
         }
 
-        const found = await collection.find(matchID, );
+        const found = await collection.find(matchID);
         if (found) {
             res.status(200).send(found.toArray());
             return
