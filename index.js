@@ -27,27 +27,27 @@ app.get("/", (req, res) => {
     res.status(300).redirect("/api-info.html");
 });
 
-app.get("/userdata/get/", async (req, res) => {
+app.get("/userdata/get/serverName/serverPassword", async (req, res) => {
     try {
         await client.connect();
         const db = client.db(dbName);
         const col = db.collection(collectionName);
-        // const matchID = {
-        //     _id: ObjectId(req.params.id)
-        // }
-        const allUserData = await col.find().toArray();
 
-        console.log(allUserData);
+        const matchID = {
+            serverName: req.params.serverName,
+            serverPassword: req.params.serverPassword
+        }
+        // const allUserData = await col.find().toArray();
+        // console.log(allUserData);
+        // res.status(200).send(allUserData);
 
-        res.status(200).send(allUserData);
-
-        // const found = await collection.findOne(matchID);
-        // if (found) {
-        //     res.status(200).send(found);
-        //     return
-        // } else {
-        //     res.status(400).send(`User data not found with id ${req.body.id}`);
-        // }
+        const found = await collection.findOne(matchID);
+        if (found) {
+            res.status(200).send(found);
+            return
+        } else {
+            res.status(400).send(`User data not found with id ${req.body.id}`);
+        }
     } catch (error) {
         console.log(error);
         res.status(500).send({
@@ -105,5 +105,5 @@ app.post("/userdata/send", async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`API running at at http://localhost:${port}`)
+    console.log(`API running at at ${port}`)
 });
