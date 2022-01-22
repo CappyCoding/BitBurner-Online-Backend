@@ -57,8 +57,8 @@ app.get("/userdata/get/:serverName/:serverPassword", async (req, res) => {
 
 app.post("/userdata/send", async (req, res) => {
 
-    if (!req.body.serverName || !req.body.serverPassword || !req.body.userMoney || !req.body.hackingSkill || !req.body.isOnline) {
-        res.status(400).send("Bad request: serverName, serverPassword, userMoney, hackingSkill or isOnline");
+    if (!req.body.serverName || !req.body.serverPassword || !req.body.userMoney || !req.body.hackingSkill) {
+        res.status(400).send("Bad request: serverName, serverPassword, userMoney or hackingSkill");
         return;
     }
 
@@ -71,8 +71,7 @@ app.post("/userdata/send", async (req, res) => {
             serverName: req.body.serverName,
             serverPassword: req.body.serverPassword,
             userMoney: req.body.userMoney,
-            hackingSkill: req.body.hackingSkill,
-            isOnline: req.body.isOnline
+            hackingSkill: req.body.hackingSkill
         };
 
         // Validation for duplicates
